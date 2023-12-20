@@ -31,7 +31,7 @@ class Starter extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               primary: Colors.blue,
               onPrimary: Colors.white,
-              minimumSize: Size(200, 50), // Adjust the size as needed
+              minimumSize: Size(200, 50), 
             ),
           ),
         ],

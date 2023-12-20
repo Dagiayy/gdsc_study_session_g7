@@ -1,9 +1,6 @@
 import 'package:figma/taskdescriptionpage.dart';
 import 'package:flutter/material.dart';
 import 'package:figma/main.dart';
-
-
-
 import 'package:flutter/material.dart';
 
 class CreateTaskPage extends StatelessWidget {

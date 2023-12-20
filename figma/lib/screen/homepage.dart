@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           // Picture at the top
           Image(
-            image: AssetImage('assets/stickman-with-todo-list.png'), // Replace with your image path
+            image: AssetImage('assets/stickman-with-todo-list.png'), 
             width: 500,
             height: 200,
           ),
