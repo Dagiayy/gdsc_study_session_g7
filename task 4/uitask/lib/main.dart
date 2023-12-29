@@ -1,512 +1,453 @@
 import 'package:flutter/material.dart';
 
+
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
+      theme: ThemeData(
+        useMaterial3: true,
+      ),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+
+  final String title;
+
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _currentIndex = 0;
+Widget bulletCategory(String imagePath, String title) {
+  return Card(
+    shadowColor: Colors.black38,
+    child: Container(
+        decoration: BoxDecoration(
+            color: const Color.fromARGB(172, 173, 173, 173),
+            borderRadius: BorderRadius.circular(16.0)),
+        width: 120,
+        height: 50,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Image.asset(
+            imagePath,
+            width: 24, // Adjust the width of the image as needed
+            height: 24, // Adjust the height of the image as needed
+            color: Colors.black, // Optional: Set the color of the image
+          ),
+            Text(title),
+          ],
+        )),
+  );
+}
 
+Widget bookAdv(String imagepath, String name, String rating) {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      Stack(
+        alignment: Alignment.topRight,
+        children: [
+          Container(
+            width: 150,
+            height: 225,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16.0),
+              image: DecorationImage(
+                image: AssetImage(imagepath),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.fromLTRB(0, 15, 15, 0),
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+                color: Colors.orange, borderRadius: BorderRadius.circular(10)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.star_rounded,
+                  size: 20,
+                  color: Colors.white,
+                ),
+                Text(
+                  rating,
+                  style: const TextStyle(
+                    fontSize: 10,
+                    color: Colors.white,
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+      Text(name)
+    ],
+  );
+}
+
+Widget bookAdvWithoutRating(String imagepath, String name) {
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.start,
+    children: [
+      Container(
+        width: 150,
+        height: 225,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(16.0),
+          image: DecorationImage(
+            image: AssetImage(imagepath),
+            fit: BoxFit.cover,
+          ),
+        ),
+      ),
+      Text(name)
+    ],
+  );
+}
+
+int currentIndex = 0;
+
+class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text(
-          'GDSC BOOKSTORE',
+        title: const Text(
+          "GDSC Bookstore",
           style: TextStyle(
-            color: Colors.black,
-            fontSize: 20.0,
+            fontSize: 20,
             fontWeight: FontWeight.bold,
+            color: Colors.black,
           ),
         ),
-        leading: Builder(
-          builder: (BuildContext context) {
-            return GestureDetector(
-              onTap: () {
-                Scaffold.of(context).openDrawer();
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(
-                  Icons.menu,
-                  color: Colors.black,
-                ),
-              ),
-            );
-          },
+        leading: const Icon(
+          Icons.sort,
+          color: Colors.black,
         ),
-        actions: <Widget>[
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
-            child: Container(
-              width: 24.0,
-              height: 24.0,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage('assets/icon/setting_5251209.png'),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white60,
+                    borderRadius: BorderRadius.circular(15)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      width: MediaQuery.of(context).size.width * 0.75,
+                      child: const TextField(
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Looking for...',
+                        ),
+                      ),
+                    ),
+                    Container(
+                      width: 57,
+                      height: 57,
+                      decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(5)),
+                      child: const Icon(
+                        Icons.tune,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.all(8.0),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(8.0),
-                      ),
-                      child: Row(
+            Card(
+              shadowColor: Colors.black,
+              child: Container(
+                decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Color.fromARGB(255, 0, 103, 188),
+                        Color.fromARGB(255, 67, 170, 255),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(16.0)),
+                width: MediaQuery.of(context).size.width * 0.85,
+                height: 215,
+                child: const Padding(
+                  padding: EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Expanded(
-                            child: Text(
-                              'Search ',
-                              style: TextStyle(
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                          Icon(
-                            Icons.search,
-                            color: Colors.black,
+                          Text(
+                            "December 26, 2023",
+                            style: TextStyle(color: Colors.white),
                           ),
                         ],
                       ),
-                    ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "Today a reader,",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: 7,
+                          ),
+                          Text(
+                            "Tomorrow a leader",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.bookmark,
+                                size: 40,
+                                color: Colors.white,
+                              ),
+                              Icon(
+                                Icons.share,
+                                size: 40,
+                                color: Colors.white,
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  SizedBox(width: 8.0),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: Icon(
-                      Icons.settings,
-                      size: 24,
-                      color: Colors.black,
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 10.0),
-              ClipRRect(
-                borderRadius: BorderRadius.circular(15.0),
-                child: Image.network(
-                  'assets/images/photo_2023-12-23_05-43-08.jpg',
-                  width: 400.0,
-                  height: 170.0,
-                  fit: BoxFit.cover,
                 ),
               ),
-              SizedBox(height: 16.0),
-              Text(
-                'Category',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                ),
+            ),
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [Text("Categories", style: TextStyle(fontSize: 25))],
               ),
-              SizedBox(height: 8.0),
-              Row(
+            ),
+            Wrap(
+              children: [
+                bulletCategory('assets/icon/healthcare.png', "Health"),
+                bulletCategory('assets/icon/microscope.png', "Science"),
+                bulletCategory('assets/icon/cpu.png', "Technology"),
+                bulletCategory('assets/icon/history-book.png', "history"),
+                bulletCategory('assets/icon/life (1).png', "philosophy"),
+              ],
+            ),
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildCategoryBox('Health', Icons.favorite),
-                  _buildCategoryBox('Science', Icons.school),
-                  _buildCategoryBox('History', Icons.history),
-                  _buildCategoryBox('Philosophy', Icons.sentiment_satisfied),
-                  _buildCategoryBox('Technology', Icons.devices),
+                  Text("Recommendations", style: TextStyle(fontSize: 25)),
+                  Icon(Icons.arrow_forward_ios)
                 ],
               ),
-              SizedBox(height: 16.0),
-              Text(
-                'Recommendation',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 8.0),
-          Container(
-  height: 140.0,
-  padding: const EdgeInsets.symmetric(horizontal: 4.0), // Adjust the horizontal padding as needed
-  child: ListView.builder(
-    scrollDirection: Axis.horizontal,
-    itemCount: 5,
-    itemExtent: 120.0, // Adjust the item extent as needed
-    itemBuilder: (context, index) {
-      if (index == 0) {
-        // For title 0, use a specific image
-        return _buildRecommendationCard(
-          'Title $index',
-          'Description $index',
-          'assets/images/photo_2023-12-24_03-57-45.jpg',
-        );
-      } else if (index == 1) {
-        // For title 1, use a specific image
-        return _buildRecommendationCard(
-          'Title $index',
-          'Description $index',
-          'assets/images/photo_2023-12-24_03-57-45.jpg',
-        );
-      }else if (index == 2) {
-        // For title 1, use a specific image
-        return _buildRecommendationCard(
-          'Title $index',
-          'Description $index',
-          'assets/images/photo_2023-12-24_03-57-45.jpg',
-        );
-      } else if (index == 3) {
-        // For title 1, use a specific image
-        return _buildRecommendationCard(
-          'Title $index',
-          'Description $index',
-          'assets/images/photo_2023-12-24_03-57-45.jpg',
-        );
-      } else if (index == 4) {
-        // For title 1, use a specific image
-        return _buildRecommendationCard(
-          'Title $index',
-          'Description $index',
-          'assets/images/photo_2023-12-24_03-57-45.jpg',
-        );
-      }  else {
-        // For other titles, use the default pattern
-        return _buildRecommendationCard(
-          'Title $index',
-          'Description $index',
-          'assets/images/recommendation_$index.jpg',
-        );
-      }
-    },
-  ),
-),
-
-
-              SizedBox(height: 16.0),
-              Text(
-                'New',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 8.0),
-           Container(
-  height: 140.0,
-  padding: const EdgeInsets.symmetric(horizontal: 4.0), // Adjust the horizontal padding as needed
-  child: ListView.builder(
-    scrollDirection: Axis.horizontal,
-    itemCount: 5,
-    itemExtent: 120.0, // Adjust the item extent as needed
-    itemBuilder: (context, index) {
-      if (index == 0) {
-        // For title 0, use a specific image
-        return _buildNewCard(
-          'Title $index',
-          'Description $index',
-          'assets/images/photo_2023-12-24_04-26-48.jpg',
-        );
-      } else if (index == 1) {
-        // For title 1, use a specific image
-        return _buildNewCard(
-          'Title $index',
-          'Description $index',
-          'assets/images/photo_2023-12-24_04-26-48.jpg',
-        );
-      } else if (index == 2) {
-        // For title 2, use a specific image
-        return _buildNewCard(
-          'Title $index',
-          'Description $index',
-          'assets/images/photo_2023-12-24_04-26-48.jpg',
-        );
-      } else if (index == 3) {
-        // For title 3, use a specific image
-        return _buildNewCard(
-          'Title $index',
-          'Description $index',
-          'assets/images/photo_2023-12-24_04-26-48.jpg',
-        );
-      } else if (index == 4) {
-        // For title 4, use a specific image
-        return _buildNewCard(
-          'Title $index',
-          'Description $index',
-          'assets/images/photo_2023-12-24_04-26-48.jpg',
-        );
-      } else {
-        // For other titles, use the default pattern
-        return _buildNewCard(
-          'Title $index',
-          'Description $index',
-          'assets/images/recommendation_$index.jpg',
-        );
-      }
-    },
-  ),
-),
-
-
-              SizedBox(height: 16.0),
-              Text(
-                'Trending',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(height: 8.0),
-               Container(
-  height: 140.0,
-  padding: const EdgeInsets.symmetric(horizontal: 4.0), // Adjust the horizontal padding as needed
-  child: ListView.builder(
-    scrollDirection: Axis.horizontal,
-    itemCount: 5,
-    itemExtent: 120.0, // Adjust the item extent as needed
-    itemBuilder: (context, index) {
-      if (index == 0) {
-        // For title 0, use a specific image
-        return _buildTrendingCard(
-          'Title $index',
-          'Description $index',
-          'assets/images/photo_2023-12-24_02-29-23.jpg',
-        );
-      } else if (index == 1) {
-        // For title 1, use a specific image
-        return _buildTrendingCard(
-          'Title $index',
-          'Description $index',
-          'assets/images/photo_2023-12-24_02-29-23.jpg',
-        );
-      } else if (index == 2) {
-        // For title 2, use a specific image
-        return _buildTrendingCard(
-          'Title $index',
-          'Description $index',
-          'assets/images/photo_2023-12-24_02-29-23.jpg',
-        );
-      } else if (index == 3) {
-        // For title 3, use a specific image
-        return _buildTrendingCard(
-          'Title $index',
-          'Description $index',
-          'assets/images/photo_2023-12-24_02-29-23.jpg',
-        );
-      } else if (index == 4) {
-        // For title 4, use a specific image
-        return _buildTrendingCard(
-          'Title $index',
-          'Description $index',
-          'assets/images/photo_2023-12-24_02-29-23.jpg',
-        );
-      } else {
-        // For other titles, use the default pattern
-        return _buildTrendingCard(
-          'Title $index',
-          'Description $index',
-          'assets/images/recommendation_$index.jpg',
-        );
-      }
-    },
-  ),
-),
-            ],
-            
-      ),
-        )
-      ),
-      drawer: Drawer(
-        child: ListView(
-          children: <Widget>[
-            ListTile(
-              title: Text('Drawer Item 1'),
-              onTap: () {
-                Navigator.pop(context);
-              },
             ),
-            ListTile(
-              title: Text('Drawer Item 2'),
-              onTap: () {
-                Navigator.pop(context);
-              },
+            SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    bookAdv('assets/image/2.jpg', "Le Papillon", "5.0"),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    bookAdv(
+                        'assets/image/9.jpg', "Yebedel Menged", "4.0"),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    bookAdv('assets/image/1.jpg', "Mahlet", "3.5"),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    bookAdv('assets/image/1.jpg', "Rich Dad Poor Dad",
+                        "3.5"),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                  ],
+                )),
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("New", style: TextStyle(fontSize: 25)),
+                  Icon(Icons.arrow_forward_ios)
+                ],
+              ),
             ),
+            SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    bookAdvWithoutRating(
+                        'assets/image/7.jpg', "Rich Dad Poor Dad"),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    bookAdvWithoutRating('assets/image/8.jpg', "Piyasa"),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    bookAdvWithoutRating(
+                        'assets/image/5.jpg', "Born a Crime"),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    bookAdvWithoutRating(
+                        'assets/image/5.jpg', "Le Paplion"),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                  ],
+                )),
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Trending", style: TextStyle(fontSize: 25)),
+                  Icon(Icons.arrow_forward_ios)
+                ],
+              ),
+            ),
+            SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    bookAdv('assets/image/6.jpg',
+                        "Yetekolefe Menged", "5.0"),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    bookAdv(
+                        'assets/image/4.jpg', "Born a Crime", "4.0"),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    bookAdv('assets/image/3.jpg', "Lela Sew", "4.5"),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    bookAdv('assets/image/4.jpg', "Le Paplion", "3.5"),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                  ],
+                )),
+            SizedBox(
+              height: 16,
+            )
           ],
         ),
       ),
-      bottomNavigationBar: MyBottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
+      
+    bottomNavigationBar: BottomNavigationBar(
+  currentIndex: currentIndex,
+  onTap: (int currentIndex) {},
+  items: [
+    BottomNavigationBarItem(
+      icon: Image.asset(
+        'assets/icon/web-content.png',
+        width: 24, // Set width as needed
+        height: 24, // Set height as needed
+        color: Colors.black, // Optional: Set color
       ),
-    );
-  }
-
-  Widget _buildCategoryBox(String title, IconData icon) {
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.all(8.0),
-        margin: const EdgeInsets.all(4.0),
-        decoration: BoxDecoration(
-          color: Colors.grey[200],
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon),
-            SizedBox(height: 4.0),
-            Text(title),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildRecommendationCard(String title, String description, String imagePath) {
-  return Container(
-    width: 120.0,
-    margin: const EdgeInsets.only(right: 8.0), // Reduced right margin
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(8.0),
-          child: Image.asset(
-            imagePath,
-            width: 80.0,
-            height: 90.0,
-            fit: BoxFit.cover,
-          ),
-        ),
-        SizedBox(height: 4.0), // Reduced height
-        Text(
-          title,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Text(description),
-      ],
+      label: '',
     ),
-  );
-}
-
-  Widget _buildNewCard(String title, String description, String imagePath) {
-    return Container(
-      width: 160.0,
-      margin: const EdgeInsets.only(right: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
-            child: Image.asset(
-              imagePath,
-              width: 80.0,
-              height: 90.0,
-              fit: BoxFit.cover,
-            ),
-          ),
-          SizedBox(height: 8.0),
-          Text(
-            title,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(description),
-        ],
+    BottomNavigationBarItem(
+      icon: Image.asset(
+        'assets/icon/open-book.png',
+        width: 24,
+        height: 24,
+        color: Colors.black,
       ),
-    );
-  }
-
-  Widget _buildTrendingCard(String title, String description, String imagePath) {
-    return Container(
-      width: 160.0,
-      margin: const EdgeInsets.only(right: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8.0),
-            child: Image.asset(
-              imagePath,
-              width: 80.0,
-              height: 100.0,
-              fit: BoxFit.cover,
-            ),
-          ),
-          SizedBox(height: 8.0),
-          Text(
-            title,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          Text(description),
-        ],
+      label: '',
+    ),
+    BottomNavigationBarItem(
+      icon: Image.asset(
+        'assets/icon/home.png',
+        width: 24,
+        height: 24,
+        color: Colors.black,
       ),
-    );
-  }
-}
-
-class MyBottomNavigationBar extends StatelessWidget {
-  final int currentIndex;
-  final ValueChanged<int> onTap;
-
-  MyBottomNavigationBar({required this.currentIndex, required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      currentIndex: currentIndex,
-      onTap: onTap,
-      items: [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.article,color: Colors.black),
-          label: 'Fancy News',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.menu_book, color: Colors.black),
-          label: 'Read',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home, color: Colors.black),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.book, color: Colors.black),
-          label: 'Books',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person, color: Colors.black),
-          label: 'Profile',
-        ),
-      ],
-    );
+      label: '',
+    ),
+    BottomNavigationBarItem(
+      icon: Image.asset(
+        'assets/icon/book.png',
+        width: 24,
+        height: 24,
+        color: Colors.black,
+      ),
+      label: '',
+    ),
+    BottomNavigationBarItem(
+      icon: Image.asset(
+        'assets/icon/user (2) 1.png',
+        width: 24,
+        height: 24,
+        color: Colors.black,
+      ),
+      label: '',
+    ),
+  ],
+),
+      );
+      
+  
+    
   }
 }
