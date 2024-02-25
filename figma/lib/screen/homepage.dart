@@ -6,81 +6,117 @@ class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();
 }
-
-
-
 class _HomePageState extends State<HomePage> {
-  List<Map<String,dynamic>> task = [
+  List<Map<String, dynamic>> task = [
     {
       "date": "12/1/2023",
-      "description":"sdkjbkdsvbdjsvb"
+      "description": "sdkjbkdsvbdjsvb",
     },
-    
+   
     {
       "date": "12/1/2023",
-      "description":"sdkjbkdsvbdjsvb"
+      "description": "sdkjbkdsvbdjsvb",
     },
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          // Picture at the top
-          Image(
-            image: AssetImage('assets/stickman-with-todo-list.png'), 
-            width: 500,
-            height: 200,
+      appBar: AppBar(
+        
+        title: Text('Todo List'),
+        centerTitle: true, 
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios, color: const Color.fromARGB(255, 255, 115, 0)), // Set your prefix icon here
+          onPressed: () {
+            // Handle prefix icon tap
+          },
+        ),
+        actions: [
+         
+          IconButton(
+            icon: Icon(Icons.more_vert), // Another example of a suffix icon
+            onPressed: () {
+              // Handle suffix icon tap
+            },
           ),
-          SizedBox(height: 20),
-          // Title "Tasks List"
+        ],
+      ),
+     body: Column(
+  children: [
+    // Picture at the top
+    Image(
+      image: AssetImage('assets/stickman-with-todo-list.png'),
+      width: 500,
+      height: 200,
+    ),
+    SizedBox(height: 20),
+
+    // Title "Tasks List"
+    Align(
+      alignment: Alignment.centerLeft,
+      child: Row(
+        children: [
+          SizedBox(width: 20),
           Text(
             'Tasks List',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 20),
-          SizedBox(
-            height:300,
-            child: ListView.builder(
-              itemCount: task.length,
-              itemBuilder: (context,index){
-                return TaskItemBox(TaskItem(description: task[index]["description"], date: task[index]["date"], color: Colors.green));
-              },
-            ),
-          ),
-          // Task items with decorative colored strip or line
-          
-          // SizedBox(height: 16),
-          // TaskItemBox(TaskItem(description: 'Task 2', date: '2023-02-15', color: Colors.blue)),
-          // SizedBox(height: 16),
-          // TaskItemBox(TaskItem(description: 'Task 3', date: '2023-03-10', color: Colors.orange)),
-          // SizedBox(height: 16),
-          // TaskItemBox(TaskItem(description: 'Task 4', date: '2023-04-05', color: Colors.purple)),
-          // SizedBox(height: 20),
-          // Decorative colored strip or line at the end
-          Container(
-            height: 10,
-            color: Colors.orange,
-          ),
-          SizedBox(height: 20),
-          // "Create Task" button at the end
-          ElevatedButton(
-            onPressed: () {
-              // Navigate to the CreateTaskPage when the "Create Task" button is pressed
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CreateTaskPage()),
-              );
-            },
-            child: Text('Create Task'),
-            style: ElevatedButton.styleFrom(
-              primary: Color.fromARGB(255, 246, 82, 18),
-              onPrimary: Colors.white,
-              minimumSize: Size(200, 50), // Adjust the size as needed
-            ),
-          ),
         ],
       ),
+    ),
+
+    SizedBox(height: 20),
+
+    // Task items with decorative colored strip or line
+   Expanded(
+  child: ListView.separated(
+    itemCount: task.length,
+    separatorBuilder: (BuildContext context, int index) => SizedBox(height: 10),
+    itemBuilder: (context, index) {
+      return Container(
+        decoration: BoxDecoration(
+          border: Border(
+            right: BorderSide(color: Colors.black, width: 2.0),
+          ),
+        ),
+        child: TaskItemBox(
+          TaskItem(
+            description: task[index]["description"],
+            date: task[index]["date"],
+            color: Colors.green,
+          ),
+        ),
+      );
+    },
+  ),
+),
+
+
+   Spacer(),
+            // "Create Task" button at the top
+           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+  children: [
+    ElevatedButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CreateTaskPage()),
+        );
+      },
+      child: Text('Create Task'),
+      style: ElevatedButton.styleFrom(
+        primary: Color.fromARGB(255, 246, 85, 85),
+        onPrimary: Colors.white,
+        minimumSize: Size(200, 50),
+      ),
+    ),
+  ],
+)
+
+  ]
+),
     );
   }
 }
