@@ -91,16 +91,25 @@ Widget build(BuildContext context) {
                           ),
                           SizedBox(width: 10),
                           Row(
+                            
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                task.title,
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 2,
+                              
+                              Container(
+                                width:200,
+                                height: 50,
+                                child: Text(
+                                  task.title,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 2,
+                                ),
                               ),
                               SizedBox(width: 100,),
-                              Text(task.deadline.toString()),
+                              Container(
+                                width: 100,
+                                height:50,
+                                child: Text(task.deadline.toString())),
                               Container(
                                 height: 1,
                                 color: Colors.black,
@@ -133,26 +142,27 @@ Widget build(BuildContext context) {
           ),
           
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-                         children: [ElevatedButton(
-                                       onPressed: () {
-                                         Navigator.of(context).push(
-                                           MaterialPageRoute(builder: (context) => Page3()),
-                                         );
-                                       },
-                                       child: Text('Create Task'),
-                                       style: ElevatedButton.styleFrom(
-                                         primary: Color.fromARGB(255, 246, 85, 85),
-                                         onPrimary: Colors.white,
-                                         minimumSize: Size(200, 50),
-                                       ),
-                                        
-                          ),
-                         ]
-                       ),
-             
+         Flexible(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => Page3()),
+                    );
+                  },
+                  child: Text('Create Task'),
+                  style: ElevatedButton.styleFrom(
+                    primary: Color.fromARGB(255, 246, 85, 85),
+                    onPrimary: Colors.white,
+                    minimumSize: Size(200, 50),
+                  ),
+                ),
+              ],
+            ),
+          ),
       ]
       
             ),

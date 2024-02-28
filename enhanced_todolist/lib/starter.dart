@@ -11,7 +11,7 @@ class Page1 extends StatelessWidget {
        
         children: [
           Container(
-          child: Row( mainAxisAlignment: MainAxisAlignment.center,
+          child: const Row( mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Image(
             image: AssetImage('assets/images/1.png'), // Replace with your image path
