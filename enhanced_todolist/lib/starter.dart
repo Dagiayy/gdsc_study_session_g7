@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'page2.dart'; // Import the next page
+import 'homepage.dart'; // Import the next page
 
 class Page1 extends StatelessWidget {
   @override
